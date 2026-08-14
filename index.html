@@ -322,37 +322,23 @@
         }
 
         // Fungsi utama saat tombol ditekan
-        function bukaKejutan() {
-            // 1. Matikan tombol agar tidak di klik 2x
-            document.getElementById('btnBuka').disabled = true;
-            document.getElementById('btnBuka').innerText = "Membuka...";
+function bukaKejutan() {
+    const welcome = document.getElementById('welcomeScreen');
+    welcome.style.opacity = '0';
+    welcome.style.visibility = 'hidden';
 
-            // 2. Mainkan lagu dari Audio Player di dalam surat
-            const bgMusic = document.getElementById('bgMusic');
-            bgMusic.volume = 0.6; // Volume default 60%
-            bgMusic.play().catch(error => {
-                console.log("Autoplay ditahan oleh browser. User harus klik play manual di dalam surat.", error);
-            });
+    const content = document.getElementById('mainContent');
+    content.classList.add('show');
 
-            // 3. Animasi transisi layar
-            const welcomeScreen = document.getElementById('welcomeScreen');
-            const mainContent = document.getElementById('mainContent');
-            
-            welcomeScreen.style.opacity = '0';
-            
-            setTimeout(() => {
-                welcomeScreen.style.display = 'none'; // Hilangkan total layar awal
-                mainContent.style.display = 'block'; // Tampilkan layout surat
-                
-                // Beri sedikit jeda agar transisi CSS 'show' terlihat mulus
-                setTimeout(() => {
-                    mainContent.classList.add('show');
-                }, 50);
+    const music = document.getElementById('bgMusic');
+    // HAPUS tautan archive.org lama dan ganti dengan ini:
+    music.src = "hubbuka-fiqolbi.mp3"; 
+    music.play().catch(error => {
+        console.log("Autoplay ditangguhkan browser");
+    });
 
-                // 4. Mulai hujan bunga/emoji
-                effectInterval = setInterval(createPetal, 300);
-            }, 1000);
-        }
-    </script>
+    effectInterval = setInterval(createPetal, 300);
+}
+</script>
 </body>
 </html>
