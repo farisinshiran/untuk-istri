@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barakallah Fii Umrik Istriku</title>
+    <title>Barakallah Fii Umrik Istriku!</title>
     <style>
         /* Pengaturan Dasar */
         * {
@@ -20,7 +20,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
             padding: 20px;
         }
 
@@ -67,13 +67,13 @@
             text-align: center;
         }
 
-        /* Kontainer Utama (Tersembunyi di awal) */
+        /* Kontainer Utama */
         .container {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
-            max-width: 600px;
+            max-width: 650px;
             width: 100%;
-            padding: 40px 30px;
+            padding: 40px 25px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             text-align: center;
@@ -135,6 +135,48 @@
             font-weight: 600;
         }
 
+        /* Gaya Galeri 3 Foto Polaroid */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 10px 10px 20px 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            transition: transform 0.3s ease;
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 2px;
+            background-color: #eee; /* warna dasar jika foto belum dimuat */
+        }
+
+        .polaroid span {
+            font-size: 0.8rem;
+            color: #777;
+            font-style: italic;
+            display: block;
+            margin-top: 10px;
+        }
+
+        /* Rotasi variasi foto agar terlihat estetik berantakan (scrapbook) */
+        .polaroid:nth-child(1) { transform: rotate(-3deg); }
+        .polaroid:nth-child(2) { transform: rotate(2deg); }
+        .polaroid:nth-child(3) { transform: rotate(-1deg); }
+
+        .polaroid:hover {
+            transform: scale(1.05) rotate(0deg);
+            z-index: 15;
+        }
+
         .closing {
             margin-top: 30px;
             font-style: italic;
@@ -156,6 +198,17 @@
             pointer-events: none;
             z-index: 1;
             animation: fall linear forwards;
+        }
+
+        /* Responsif Layar Kecil / HP */
+        @media (max-width: 500px) {
+            .photo-gallery {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .polaroid img {
+                height: 250px;
+            }
         }
 
         /* Keyframes */
@@ -181,10 +234,8 @@
     </div>
 
     <!-- Elemen Audio Musik Albi Nadak -->
-    <!-- Menggunakan instrumen berkualitas tinggi dari repositori publik gratis -->
     <audio id="bgMusic" loop>
-        <source src="hubbuka-fiqolbi.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
+        <source src="https://archive.org" type="audio/mp3">
     </audio>
 
     <!-- Efek Kelopak Bunga -->
@@ -204,6 +255,25 @@
             Memasuki <span class="highlight">tahun ke-6 pernikahan kita</span> ini, aku menyadari ada begitu banyak cobaan, namun jauh lebih banyak hal-hal indah yang Allah berikan berupa berbagai macam rezeki kepada kita. Salah satu rezeki terbesar yang paling aku syukuri adalah bagaimana kita sekarang bisa <span class="highlight">lebih saling memahami dan mengerti satu sama lain</span>. Proses mendewasa bersamamu adalah hadiah terbaik dalam hidupku.
         </p>
 
+        <!-- BAGIAN 3 FOTO POLAROID -->
+        <div class="photo-gallery">
+            <div class="polaroid">
+                <!-- Ganti foto1.jpg dengan nama file foto Anda -->
+                <img src="foto1.jpg" alt="Kenangan 1">
+                <span>Awal Perjalanan ✨</span>
+            </div>
+            <div class="polaroid">
+                <!-- Ganti foto2.jpg dengan nama file foto Anda -->
+                <img src="foto2.jpg" alt="Kenangan 2">
+                <span>Bersama Ibu ❤️</span>
+            </div>
+            <div class="polaroid">
+                <!-- Ganti foto3.jpg dengan nama file foto Anda -->
+                <img src="foto3.jpg" alt="Kenangan 3">
+                <span>Tahun ke-6 🌸</span>
+            </div>
+        </div>
+
         <p>
             Semoga di usiamu yang baru ini, Allah selalu melimpahkan kesehatan, keberkahan, kebahagiaan, serta perlindungan-Nya untukmu. Tetaplah menjadi ibu dan istri yang hebat untuk keluarga ini. Aku mencintaimu karena Allah, hari ini, esok, dan selamanya.
         </p>
@@ -216,7 +286,7 @@
         <!-- Tombol Kontrol Musik Cadangan -->
         <div class="audio-player">
             <audio controls autoplay loop style="height: 30px; width: 220px;">
-                <source src="https://archive.org" type="audio/mp3">
+                <source src="hubbuka-fiqolbi.mp3" type="audio/mp3">
             </audio>
         </div>
     </div>
@@ -239,32 +309,3 @@
             petalContainer.appendChild(petal);
 
             setTimeout(() => {
-                petal.remove();
-            }, 6000);
-        }
-
-        // Fungsi pemicu saat tombol diklik
-        function bukaKejutan() {
-            // 1. Sembunyikan halaman pembuka
-            const welcome = document.getElementById('welcomeScreen');
-            welcome.style.opacity = '0';
-            welcome.style.visibility = 'hidden';
-
-            // 2. Munculkan isi surat dengan animasi halus
-            const content = document.getElementById('mainContent');
-            content.classList.add('show');
-
-            // 3. Putar musik latar belakang Albi Nadak
-            const music = document.getElementById('bgMusic');
-            // Mengganti ke URL audio backup langsung dari internet archive yang valid
-            music.src = "https://archive.org"; 
-            music.play().catch(error => {
-                console.log("Autoplay dicegah oleh sistem browser, memutar lewat widget bawah.");
-            });
-
-            // 4. Mulai jatuhkan bunga berguguran
-            effectInterval = setInterval(createPetal, 300);
-        }
-    </script>
-</body>
-</html>
