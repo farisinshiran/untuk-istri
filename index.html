@@ -229,7 +229,7 @@
 
     <!-- Halaman Pembuka (Siasat Autoplay Musik) -->
     <div class="welcome-screen" id="welcomeScreen">
-        <div class="welcome-text">Ada surat cinta untuk Ibu... 💌</div>
+        <div class="welcome-text">Ada surat cinta untuk Kamu, Sayang 💌</div>
         <button class="envelope-btn" onclick="bukaKejutan()">Buka Surat</button>
     </div>
 
@@ -291,7 +291,7 @@
         </div>
     </div>
 
-    <script>
+<script>
         const petalContainer = document.getElementById('petal-container');
         const petalEmojis = ['🌸', '✨', '💖', '💕'];
         let effectInterval;
@@ -303,9 +303,40 @@
             petal.innerText = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
             petal.style.left = Math.random() * 100 + 'vw';
             petal.style.fontSize = Math.random() * 15 + 15 + 'px';
-            petal.style.animationDuration = Math.random() * 3 + 3 + 's';
+            
+            // Durasi jatuh acak antara 3 hingga 6 detik
+            const duration = Math.random() * 3 + 3;
+            petal.style.animationDuration = duration + 's';
             petal.style.opacity = Math.random() * 0.7 + 0.3;
 
             petalContainer.appendChild(petal);
 
+            // Menghapus elemen kelopak bunga setelah selesai jatuh agar tidak memberatkan memori browser
             setTimeout(() => {
+                petal.remove();
+            }, duration * 1000);
+        }
+
+        function bukaKejutan() {
+            // 1. Memutar musik latar
+            const bgMusic = document.getElementById('bgMusic');
+            bgMusic.play().catch(error => console.log("Gagal memutar musik:", error));
+
+            // 2. Menghilangkan layar pembuka secara perlahan
+            const welcomeScreen = document.getElementById('welcomeScreen');
+            welcomeScreen.style.opacity = '0';
+            setTimeout(() => {
+                welcomeScreen.style.visibility = 'hidden';
+                welcomeScreen.style.display = 'none';
+            }, 1000); // Sesuai dengan durasi transisi di CSS (1s)
+
+            // 3. Menampilkan surat (konten utama)
+            const mainContent = document.getElementById('mainContent');
+            mainContent.classList.add('show');
+
+            // 4. Memulai animasi bunga jatuh setiap 300 milidetik
+            effectInterval = setInterval(createPetal, 300);
+        }
+    </script>
+</body>
+</html>
