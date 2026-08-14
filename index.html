@@ -86,7 +86,7 @@
             transition: opacity 1.5s ease-out, transform 1.5s ease-out;
             max-height: 90vh;
             overflow-y: auto;
-            display: none; /* Disembunyikan dari awal agar tidak bentrok */
+            display: none; 
         }
 
         .container.show {
@@ -187,18 +187,53 @@
             color: #fb6f92;
         }
 
-        /* Kontrol Musik */
-        .audio-player {
-            margin-top: 30px;
-            display: flex;
-            flex-direction: column;
+        /* 🎵 PEMUTAR MUSIK PIRINGAN HITAM (BARU) 🎵 */
+        .floating-music {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 55px;
+            height: 55px;
+            background: radial-gradient(circle, #333 40%, #111 100%);
+            border-radius: 50%;
+            display: none; /* Muncul hanya setelah tombol awal diklik */
+            justify-content: center;
             align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            cursor: pointer;
+            z-index: 10000;
+            border: 2px solid #555;
+            transition: transform 0.2s;
         }
-        
-        .audio-note {
-            font-size: 0.8rem;
-            color: #888;
-            margin-top: 5px;
+
+        /* Bagian tengah piringan (label merah muda & lubang putih) */
+        .floating-music::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff477e;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .floating-music::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        .floating-music:hover {
+            transform: scale(1.1);
+        }
+
+        /* Animasi Berputar saat Play */
+        .floating-music.playing {
+            animation: spinRecord 3s linear infinite;
         }
 
         /* Animasi Kelopak Bunga */
@@ -207,7 +242,7 @@
             top: -20px;
             font-size: 20px;
             pointer-events: none;
-            z-index: 9999; /* Ditinggikan agar selalu di atas */
+            z-index: 9999;
             animation: fall linear forwards;
         }
 
@@ -219,6 +254,13 @@
             }
             .polaroid img {
                 height: 250px;
+            }
+            /* Menyesuaikan posisi musik di HP */
+            .floating-music {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
             }
         }
 
@@ -233,6 +275,10 @@
             to {
                 transform: translateY(105vh) rotate(360deg);
             }
+        }
+
+        @keyframes spinRecord {
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -265,15 +311,15 @@
         <div class="photo-gallery">
             <div class="polaroid">
                 <img src="foto1.jpg" alt="Kenangan 1">
-                <span>Awal Perjalanan ✨</span>
+                <span>KIta Bersama 🌸</span>
             </div>
             <div class="polaroid">
                 <img src="foto2.jpg" alt="Kenangan 2">
-                <span>Bersama Istri Tercinta ❤️</span>
+                <span>Anak Pertama Kita ❤️</span>
             </div>
             <div class="polaroid">
                 <img src="foto3.jpg" alt="Kenangan 3">
-                <span>Tahun ke-6 🌸</span>
+                <span>Tahun ke-6 ini Bersama Anak Kedua ✨</span>
             </div>
         </div>
 
@@ -285,20 +331,22 @@
             Dengan penuh cinta,<br>
             Suamimu
         </div>
-
-        <!-- Tombol Kontrol Musik (Satu-satunya sumber musik) -->
-        <div class="audio-player">
-            <audio id="bgMusic" controls loop style="height: 35px; width: 250px;">
-                <source src="hubbuka-fiqolbi.mp3" type="audio/mp3">
-            </audio>
-            <span class="audio-note">*Mainkan musik jika belum berbunyi</span>
-        </div>
     </div>
+
+    <!-- Tombol Musik Mengambang / Piringan Hitam -->
+    <div class="floating-music" id="musicBtn" onclick="toggleMusic()"></div>
+
+    <!-- Audio Player Tersembunyi -->
+    <audio id="bgMusic" loop>
+        <source src="hubbuka-fiqolbi.mp3" type="audio/mp3">
+    </audio>
 
     <script>
         const petalContainer = document.getElementById('petal-container');
         const petalEmojis = ['🌸', '✨', '💖', '💕'];
         let effectInterval;
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
 
         // Fungsi membuat animasi bunga
         function createPetal() {
@@ -321,24 +369,51 @@
             }, duration * 1000);
         }
 
-        // Fungsi utama saat tombol ditekan
-function bukaKejutan() {
-    const welcome = document.getElementById('welcomeScreen');
-    welcome.style.opacity = '0';
-    welcome.style.visibility = 'hidden';
+        // Fungsi Play / Pause ketika piringan diklik
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                musicBtn.classList.add('playing');
+            } else {
+                music.pause();
+                musicBtn.classList.remove('playing');
+            }
+        }
 
-    const content = document.getElementById('mainContent');
-    content.classList.add('show');
+        // Fungsi utama saat tombol "Buka Surat" ditekan
+        function bukaKejutan() {
+            // 1. Putar Musik & Tampilkan Piringan Hitam
+            music.volume = 0.7; 
+            music.play().then(() => {
+                // Jika berhasil autoplay, tambahkan class playing (berputar)
+                musicBtn.classList.add('playing');
+            }).catch(error => {
+                console.log("Autoplay ditangguhkan browser. User perlu klik piringan manual.");
+            });
+            
+            // Munculkan piringan (ubah dari display: none ke display: flex)
+            musicBtn.style.display = 'flex';
 
-    const music = document.getElementById('bgMusic');
-    // HAPUS tautan archive.org lama dan ganti dengan ini:
-    music.src = "hubbuka-fiqolbi.mp3"; 
-    music.play().catch(error => {
-        console.log("Autoplay ditangguhkan browser");
-    });
+            // 2. Animasi Memudar Layar Awal
+            const welcome = document.getElementById('welcomeScreen');
+            welcome.style.opacity = '0';
+            
+            setTimeout(() => {
+                welcome.style.visibility = 'hidden';
+                welcome.style.display = 'none';
 
-    effectInterval = setInterval(createPetal, 300);
-}
-</script>
+                // 3. Menampilkan Surat dengan Efek Animasi
+                const content = document.getElementById('mainContent');
+                content.style.display = 'block';
+                
+                setTimeout(() => {
+                    content.classList.add('show');
+                }, 50);
+
+                // 4. Mulai Hujan Kelopak Bunga
+                effectInterval = setInterval(createPetal, 300);
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
