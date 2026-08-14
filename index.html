@@ -65,6 +65,7 @@
             font-weight: 600;
             margin-bottom: 20px;
             text-align: center;
+            padding: 0 20px;
         }
 
         /* Kontainer Utama */
@@ -85,9 +86,11 @@
             transition: opacity 1.5s ease-out, transform 1.5s ease-out;
             max-height: 90vh;
             overflow-y: auto;
+            display: none; /* Disembunyikan dari awal agar tidak bentrok */
         }
 
         .container.show {
+            display: block;
             opacity: 1;
             transform: translateY(0);
         }
@@ -156,7 +159,7 @@
             height: 150px;
             object-fit: cover;
             border-radius: 2px;
-            background-color: #eee; /* warna dasar jika foto belum dimuat */
+            background-color: #eee;
         }
 
         .polaroid span {
@@ -167,7 +170,6 @@
             margin-top: 10px;
         }
 
-        /* Rotasi variasi foto agar terlihat estetik berantakan (scrapbook) */
         .polaroid:nth-child(1) { transform: rotate(-3deg); }
         .polaroid:nth-child(2) { transform: rotate(2deg); }
         .polaroid:nth-child(3) { transform: rotate(-1deg); }
@@ -175,6 +177,7 @@
         .polaroid:hover {
             transform: scale(1.05) rotate(0deg);
             z-index: 15;
+            position: relative;
         }
 
         .closing {
@@ -184,19 +187,27 @@
             color: #fb6f92;
         }
 
-        /* Kontrol Musik Minimalis */
+        /* Kontrol Musik */
         .audio-player {
-            margin-top: 25px;
-            display: inline-block;
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .audio-note {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 5px;
         }
 
         /* Animasi Kelopak Bunga */
         .petal {
             position: fixed;
-            top: -10px;
+            top: -20px;
             font-size: 20px;
             pointer-events: none;
-            z-index: 1;
+            z-index: 9999; /* Ditinggikan agar selalu di atas */
             animation: fall linear forwards;
         }
 
@@ -227,16 +238,11 @@
 </head>
 <body>
 
-    <!-- Halaman Pembuka (Siasat Autoplay Musik) -->
+    <!-- Halaman Pembuka -->
     <div class="welcome-screen" id="welcomeScreen">
         <div class="welcome-text">Ada surat cinta untuk Kamu, Sayang 💌</div>
-        <button class="envelope-btn" onclick="bukaKejutan()">Buka Surat</button>
+        <button class="envelope-btn" id="btnBuka" onclick="bukaKejutan()">Buka Surat</button>
     </div>
-
-    <!-- Elemen Audio Musik Albi Nadak -->
-    <audio id="bgMusic" loop>
-        <source src="hubbuka-fiqolbi.mp3" type="audio/mp3">
-    </audio>
 
     <!-- Efek Kelopak Bunga -->
     <div id="petal-container"></div>
@@ -258,17 +264,14 @@
         <!-- BAGIAN 3 FOTO POLAROID -->
         <div class="photo-gallery">
             <div class="polaroid">
-                <!-- Ganti foto1.jpg dengan nama file foto Anda -->
                 <img src="foto1.jpg" alt="Kenangan 1">
                 <span>Awal Perjalanan ✨</span>
             </div>
             <div class="polaroid">
-                <!-- Ganti foto2.jpg dengan nama file foto Anda -->
                 <img src="foto2.jpg" alt="Kenangan 2">
-                <span>Bersama Ibu ❤️</span>
+                <span>Bersama Istri Tercinta ❤️</span>
             </div>
             <div class="polaroid">
-                <!-- Ganti foto3.jpg dengan nama file foto Anda -->
                 <img src="foto3.jpg" alt="Kenangan 3">
                 <span>Tahun ke-6 🌸</span>
             </div>
@@ -283,19 +286,21 @@
             Suamimu
         </div>
 
-        <!-- Tombol Kontrol Musik Cadangan -->
+        <!-- Tombol Kontrol Musik (Satu-satunya sumber musik) -->
         <div class="audio-player">
-            <audio controls autoplay loop style="height: 30px; width: 220px;">
+            <audio id="bgMusic" controls loop style="height: 35px; width: 250px;">
                 <source src="hubbuka-fiqolbi.mp3" type="audio/mp3">
             </audio>
+            <span class="audio-note">*Mainkan musik jika belum berbunyi</span>
         </div>
     </div>
 
-<script>
+    <script>
         const petalContainer = document.getElementById('petal-container');
         const petalEmojis = ['🌸', '✨', '💖', '💕'];
         let effectInterval;
 
+        // Fungsi membuat animasi bunga
         function createPetal() {
             const petal = document.createElement('div');
             petal.classList.add('petal');
@@ -304,38 +309,49 @@
             petal.style.left = Math.random() * 100 + 'vw';
             petal.style.fontSize = Math.random() * 15 + 15 + 'px';
             
-            // Durasi jatuh acak antara 3 hingga 6 detik
-            const duration = Math.random() * 3 + 3;
+            const duration = Math.random() * 3 + 3; // 3 - 6 detik
             petal.style.animationDuration = duration + 's';
             petal.style.opacity = Math.random() * 0.7 + 0.3;
 
             petalContainer.appendChild(petal);
 
-            // Menghapus elemen kelopak bunga setelah selesai jatuh agar tidak memberatkan memori browser
+            // Hapus kelopak dari sistem setelah jatuh agar browser tidak berat
             setTimeout(() => {
                 petal.remove();
             }, duration * 1000);
         }
 
+        // Fungsi utama saat tombol ditekan
         function bukaKejutan() {
-            // 1. Memutar musik latar
+            // 1. Matikan tombol agar tidak di klik 2x
+            document.getElementById('btnBuka').disabled = true;
+            document.getElementById('btnBuka').innerText = "Membuka...";
+
+            // 2. Mainkan lagu dari Audio Player di dalam surat
             const bgMusic = document.getElementById('bgMusic');
-            bgMusic.play().catch(error => console.log("Gagal memutar musik:", error));
+            bgMusic.volume = 0.6; // Volume default 60%
+            bgMusic.play().catch(error => {
+                console.log("Autoplay ditahan oleh browser. User harus klik play manual di dalam surat.", error);
+            });
 
-            // 2. Menghilangkan layar pembuka secara perlahan
+            // 3. Animasi transisi layar
             const welcomeScreen = document.getElementById('welcomeScreen');
-            welcomeScreen.style.opacity = '0';
-            setTimeout(() => {
-                welcomeScreen.style.visibility = 'hidden';
-                welcomeScreen.style.display = 'none';
-            }, 1000); // Sesuai dengan durasi transisi di CSS (1s)
-
-            // 3. Menampilkan surat (konten utama)
             const mainContent = document.getElementById('mainContent');
-            mainContent.classList.add('show');
+            
+            welcomeScreen.style.opacity = '0';
+            
+            setTimeout(() => {
+                welcomeScreen.style.display = 'none'; // Hilangkan total layar awal
+                mainContent.style.display = 'block'; // Tampilkan layout surat
+                
+                // Beri sedikit jeda agar transisi CSS 'show' terlihat mulus
+                setTimeout(() => {
+                    mainContent.classList.add('show');
+                }, 50);
 
-            // 4. Memulai animasi bunga jatuh setiap 300 milidetik
-            effectInterval = setInterval(createPetal, 300);
+                // 4. Mulai hujan bunga/emoji
+                effectInterval = setInterval(createPetal, 300);
+            }, 1000);
         }
     </script>
 </body>
