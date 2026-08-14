@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barakallah Fii Umrik Istriku</title>
+    <style>
+        /* Pengaturan Dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe5ec, #ffc2d1);
+            color: #4a4a4a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        /* Kontainer Utama */
+        .container {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            animation: fadeInUp 1.5s ease-out;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Foto/Ilustrasi */
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            background-color: #fb6f92;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 50px;
+            box-shadow: 0 8px 20px rgba(251, 111, 146, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        /* Tipografi */
+        h1 {
+            color: #ff477e;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .age {
+            background: #ff477e;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .highlight {
+            color: #ff477e;
+            font-weight: 600;
+        }
+
+        .closing {
+            margin-top: 30px;
+            font-style: italic;
+            font-weight: bold;
+            color: #fb6f92;
+        }
+
+        /* Animasi Efek Kelopak Bunga */
+        .petal {
+            position: fixed;
+            top: -10px;
+            font-size: 20px;
+            pointer-events: none;
+            z-index: 1;
+            animation: fall linear forwards;
+        }
+
+        /* Keyframes Animasi */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Efek Kelopak Bunga di Latar Belakang -->
+    <div id="petal-container"></div>
+
+    <!-- Konten Web -->
+    <div class="container">
+        <div class="profile-img">💝</div>
+        <h1>Barakallah Fii Umrik, Istriku Tercinta</h1>
+        <span class="age">27 Th</span>
+        
+        <p>
+            Selamat ulang tahun yang ke-27, sayang. Tulisan sederhana ini adalah bentuk rasa syukur yang tak terhingga kepada Allah SWT karena telah mengirimkanmu sebagai pendamping hidupku. Terima kasih banyak karena selama ini telah dengan tulus, sabar, dan penuh kasih sayang <span class="highlight">membersamai keluarga kecil kita</span>.
+        </p>
+
+        <p>
+            Memasuki <span class="highlight">tahun ke-6 pernikahan kita</span> ini, aku menyadari ada begitu banyak cobaan, namun jauh lebih banyak hal-hal indah yang Allah berikan berupa berbagai macam rezeki kepada kita. Salah satu rezeki terbesar yang paling aku syukuri adalah bagaimana kita sekarang bisa <span class="highlight">lebih saling memahami dan mengerti satu sama lain</span>. Proses mendewasa bersamamu adalah hadiah terbaik dalam hidupku.
+        </p>
+
+        <p>
+            Semoga di usiamu yang baru ini, Allah selalu melimpahkan kesehatan, keberkahan, kebahagiaan, serta perlindungan-Nya untukmu. Tetaplah menjadi ibu dan istri yang hebat untuk keluarga ini. Aku mencintaimu karena Allah, hari ini, esok, dan selamanya.
+        </p>
+
+        <div class="closing">
+            Dengan penuh cinta,<br>
+            Suamimu
+        </div>
+    </div>
+
+    <!-- Script untuk Efek Kelopak Bunga Berguguran -->
+    <script>
+        const petalContainer = document.getElementById('petal-container');
+        const petalEmojis = ['🌸', '✨', '💖', '💕'];
+
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            
+            // Mengacak simbol, posisi, ukuran, dan kecepatan
+            petal.innerText = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.fontSize = Math.random() * 15 + 15 + 'px';
+            petal.style.animationDuration = Math.random() * 3 + 3 + 's'; // antara 3-6 detik
+            petal.style.opacity = Math.random() * 0.7 + 0.3;
+
+            petalContainer.appendChild(petal);
+
+            // Hapus elemen setelah animasi selesai agar tidak memberatkan browser
+            setTimeout(() => {
+                petal.remove();
+            }, 6000);
+        }
+
+        // Jalankan efek kelopak bunga secara berkala
+        setInterval(createPetal, 300);
+    </script>
+</body>
+</html>
