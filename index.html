@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barakallah Fii Umrik Istriku!</title>
+    <title>بارك الله في عمرك، يا حوري❤️‍🩹</title>
     <style>
         /* Pengaturan Dasar */
         * {
@@ -154,13 +154,9 @@
         .profile-img {
             width: 100px;
             height: 100px;
-            background-color: #fb6f92;
             border-radius: 50%;
             margin: 0 auto 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 45px;
+            object-fit: cover;
             box-shadow: 0 8px 20px rgba(251, 111, 146, 0.2);
         }
 
@@ -273,13 +269,17 @@
         }
 
         .floating-music::after {
-            content: '';
+            content: '\25B6';
             position: absolute;
-            width: 6px;
-            height: 6px;
-            background: white;
-            border-radius: 50%;
+            color: white;
+            font-size: 11px;
+            line-height: 1;
             z-index: 2;
+        }
+
+        .floating-music.playing::after {
+            content: '\275A\275A';
+            font-size: 10px;
         }
 
         .floating-music:hover {
@@ -358,7 +358,7 @@
     <!-- Halaman Pembuka -->
     <div class="welcome-screen" id="welcomeScreen">
         <div class="love-envelope" aria-hidden="true"><span>💌</span></div>
-        <div class="welcome-text">Ada surat cinta untuk Kamu, Sayang 💌</div>
+        <div class="welcome-text">Ada surat cinta untuk Kamu, Sayang❤️‍🩹</div>
         <button class="envelope-btn" id="btnBuka" onclick="bukaKejutan()">Buka Surat</button>
     </div>
 
@@ -367,10 +367,10 @@
 
     <!-- Konten Utama Surat -->
     <div class="container" id="mainContent">
-        <div class="profile-img">💝</div>
-        <h1>Barakallah Fii Umrik, Istriku Tercinta</h1>
+        <img class="profile-img" src="f13.webp" alt="Foto istriku tercinta">
+        <h1>❤️‍🩹بارك الله في عمرك، يا حوري❤️‍🩹</h1>
         <span class="age">27 Th</span>
-        
+         
         <p>
             Selamat ulang tahun yang ke-27, sayang. Tulisan sederhana ini adalah bentuk rasa syukur yang tak terhingga kepada Allah SWT karena telah mengirimkanmu sebagai pendamping hidupku. Terima kasih banyak karena selama ini telah dengan tulus, sabar, dan penuh kasih sayang <span class="highlight">membersamai keluarga kecil kita</span>.
         </p>
@@ -386,7 +386,7 @@
                 <span>KIta Bersama 🌸</span>
             </div>
             <div class="polaroid">
-                <img src="f2.webp" alt="Kenangan 2">
+                <img src="f10.webp" alt="Kenangan 2">
                 <span>Anak Pertama Kita ❤️</span>
             </div>
             <div class="polaroid">
@@ -397,7 +397,7 @@
                 <img src="f4.webp" alt="Kenangan 4">
             </div>
             <div class="polaroid">
-                <img src="f5.webp" alt="Kenangan 5">
+                <img src="f12.webp" alt="Kenangan 5">
             </div>
             <div class="polaroid">
                 <img src="f6.webp" alt="Kenangan 6">
@@ -424,7 +424,7 @@
     </div>
 
     <!-- Tombol Musik Mengambang / Piringan Hitam -->
-    <div class="floating-music" id="musicBtn" onclick="toggleMusic()"></div>
+    <div class="floating-music" id="musicBtn" onclick="toggleMusic()" role="button" aria-label="Putar musik" title="Putar musik"></div>
 
     <!-- Audio Player Tersembunyi -->
     <audio id="bgMusic" loop>
@@ -433,7 +433,7 @@
 
     <script>
         const petalContainer = document.getElementById('petal-container');
-        const petalEmojis = ['🌸', '✨', '💖', '💕'];
+        const petalEmojis = ['🌸', '✨', '💖', '💕', '❤️‍🩹'];
         let effectInterval;
         const music = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('musicBtn');
@@ -476,9 +476,13 @@
             if (music.paused) {
                 music.play();
                 musicBtn.classList.add('playing');
+                musicBtn.setAttribute('aria-label', 'Jeda musik');
+                musicBtn.setAttribute('title', 'Jeda musik');
             } else {
                 music.pause();
                 musicBtn.classList.remove('playing');
+                musicBtn.setAttribute('aria-label', 'Putar musik');
+                musicBtn.setAttribute('title', 'Putar musik');
             }
         }
 
